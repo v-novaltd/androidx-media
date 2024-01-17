@@ -70,6 +70,7 @@ android {
 }
 
 dependencies {
+    implementation project(modulePrefix + 'lib-effect')
     compileOnly 'org.checkerframework:checker-qual:' + checkerframeworkVersion
     implementation 'androidx.annotation:annotation:' + androidxAnnotationVersion
     implementation 'androidx.appcompat:appcompat:' + androidxAppCompatVersion

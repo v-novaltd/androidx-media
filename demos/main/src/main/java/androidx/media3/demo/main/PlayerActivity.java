@@ -32,6 +32,7 @@ import androidx.annotation.OptIn;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.media3.common.AudioAttributes;
 import androidx.media3.common.C;
+import androidx.media3.common.Effect;
 import androidx.media3.common.ErrorMessageProvider;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.PlaybackException;
@@ -41,6 +42,8 @@ import androidx.media3.common.Tracks;
 import androidx.media3.common.util.UnstableApi;
 import androidx.media3.common.util.Util;
 import androidx.media3.datasource.DataSource;
+import androidx.media3.effect.Crop;
+import androidx.media3.effect.ScaleAndRotateTransformation;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.exoplayer.RenderersFactory;
 import androidx.media3.exoplayer.drm.DefaultDrmSessionManagerProvider;
@@ -56,6 +59,7 @@ import androidx.media3.exoplayer.source.ads.AdsLoader;
 import androidx.media3.exoplayer.util.DebugTextViewHelper;
 import androidx.media3.exoplayer.util.EventLogger;
 import androidx.media3.ui.PlayerView;
+import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -261,7 +265,7 @@ public class PlayerActivity extends AppCompatActivity
   /**
    * @return Whether initialization was successful.
    */
-  protected boolean initializePlayer() {
+  @OptIn(markerClass = UnstableApi.class) protected boolean initializePlayer() {
     if (player == null) {
       Intent intent = getIntent();
 
@@ -282,6 +286,8 @@ public class PlayerActivity extends AppCompatActivity
       player.addAnalyticsListener(new EventLogger());
       player.setAudioAttributes(AudioAttributes.DEFAULT, /* handleAudioFocus= */ true);
       player.setPlayWhenReady(startAutoPlay);
+      player.setVideoEffects(ImmutableList.of((Effect)(new Crop(-0.20f, 0.20f, -0.70f, 0.70f))));
+      //player.setVideoEffects(ImmutableList.of((Effect)(new ScaleAndRotateTransformation.Builder().setScale(0.2f, 1.4f).build())));
       playerView.setPlayer(player);
       configurePlayerWithServerSideAdsLoader();
       debugViewHelper = new DebugTextViewHelper(player, debugTextView);
